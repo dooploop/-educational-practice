@@ -1,0 +1,5 @@
+keyw = "mpei"
+host = "localhost"
+user = "root"
+password = "aa346134aa"
+db_name = "study_proj"
