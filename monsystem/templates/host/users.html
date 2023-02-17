@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Войдите в систему информация о мониторинге пользователя</title>
+    {#  Импортируйте стили CSS и динамику JS, которые Bootstrap помог нам настроить #}
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+{% include 'host/nav.html' %}
+{# DjangoПолезные функции в шаблоне: фильтр  users|length Получите длину списка#}
+<h1>Мониторинг информации о вошедших в систему пользователях - количество вошедших в систему пользователей: {{ users | length }}</h1>
+{#устанавливатьtableИмя класса метки - этоtableиtable-striped，На самом деле, это использовать стиль CSS, написанный Bootstrap, чтобы помочь нам установить стиль таблицы #}
+<table class="table table-striped table-hover">
+    <tr>
+        <td>Имя пользователя, вошедшего в систему</td>
+        <td>Зарегистрированный хост</td>
+        <td>Время входа в систему</td>
+    </tr>
+
+    {% for user in users %}
+        <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.host }}</td>
+            <td>{{ user.started  | date}}</td>
+        </tr>
+    {% endfor %}
+
+
+</table>
+
+</body>
+</html>

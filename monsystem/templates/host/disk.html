@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о мониторинге диска</title>
+    {#Импортируйте стили CSS и динамику JS, которые Bootstrap помог нам настроить  #}
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+{% include 'host/nav.html' %}
+<h1>Мониторинг информации на диске</h1>
+{#Имена классов для установки тега table - table и table-striped. Фактически, для установки стиля таблицы используется CSS-стиль, написанный Bootstrap.#}
+<table class="table table-striped table-hover">
+    <tr>
+        <td>Имя раздела</td>
+        <td>Точка монтирования</td>
+        <td>Тип файловой системы</td>
+        <td>Свойства монтирования</td>
+        <td>Общая емкость диска</td>
+        <td>Процент использования диска (единица измерения: %)</td>
+    </tr>
+
+    {% for disk in disks %}
+        <tr>
+            <td>{{ disk.device }}</td>
+            <td>{{ disk.mountpoint }}</td>
+            <td>{{ disk.fstype }}</td>
+            <td>{{ disk.opts }}</td>
+            <td>{{ disk.total }}</td>
+            <td>{{ disk.percent }}</td>
+        </tr>
+    {% endfor %}
+
+
+</table>
+
+</body>
+</html>

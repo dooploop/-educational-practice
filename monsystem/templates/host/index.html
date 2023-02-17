@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Домашняя страница: Приложение для просмотра информации о сервере</title>
+    {#Импортируйте стили CSS и динамику JS, которые Bootstrap помог нам настроить  #}
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+{% include 'host/nav.html' %}
+
+<h1>Мониторинг системной информации</h1>
+{#Имена классов для установки тега table - table и table-striped. Фактически, для установки стиля таблицы используется CSS-стиль, написанный Bootstrap.#}
+<table class="table table-striped table-hover">
+    <tr>
+        <td>Имя хоста</td>
+        {#   Шаблон интерфейса，， Использование переменных{{ Имя переменной }}  Узнай, что есть в словареkeyсоответствующийvalueстоить: {{ info.keyname }}    #}
+        <td>{{ info.node }}</td>
+    </tr>
+    <tr>
+        <td>операционная система</td>
+        <td>{{ info.system }}</td>
+    </tr>
+    <tr>
+        <td>Имя ядра</td>
+        <td>{{ info.kernel_name }}</td>
+    </tr>
+    <tr>
+        <td>Номер выпуска</td>
+        <td>{{ info.release }}</td>
+    </tr>
+    <tr>
+        <td>Версия ядра</td>
+        <td>{{ info.version }}</td>
+    </tr>
+    <tr>
+        <td>Архитектура системы</td>
+        <td>{{ info.machine }}</td>
+    </tr>
+    <tr>
+        <td>Текущее время</td>
+        <td>{{ info.now_time }}</td>
+    </tr>
+    <tr>
+        <td>Время загрузки</td>
+        <td>{{ info.boot_time }}</td>
+    </tr>
+    <tr>
+        <td>Время загрузки</td>
+        <td>{{ info.boot_delta }}</td>
+    </tr>
+</table>
+
+</body>
+</html>

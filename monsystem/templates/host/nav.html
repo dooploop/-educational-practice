@@ -1,0 +1,23 @@
+{#编写代码发现html代码重复较多，就可以抽象出来， 存储到一个文件中#}
+{#其他文件希望使用， {% include 'host/nav.html' %} 导入即可 #}
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            {#     超链接       #}
+            <a class="navbar-brand" href="/">Система мониторинга ПК</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="/disk/">Мониторинг разделов диска</a></li>
+                <li><a href="/users/">Согласованное содержимое файла</a></li>
+                <li><a href="/diff/">Сравнение конфиг файлов</a></li>
+                <li><a href="/monitor/">Диспечер</a></li>
+                <li><a href="/about/">О программе</a></li>
+                <li><a href="/auth/">Авторизация</a></li>
+
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
