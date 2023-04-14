@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Диспечер</title>
+        {#Импортируйте стили CSS и динамику JS, которые Bootstrap помог нам настроить  #}
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="style/styles.css">
+    </head>
+    <body>
+        {% include 'nav.html' %}
+    <div class = "container-md " style="margin:0 5% ;">
+   
+    <p class="lead">Данная программа создана в качестве НИР, студентом кафедры математического моделирования, института ИВТИ, НИУ МЭИ.
+       <h5> Выполнил: Холиков А.Н </h5>
+        под руководством преподавателя: <h5 > Шевченко И.В.</h5> 
+    2022</p>
+</div>
+    <h2>Список пользователей</h2>
+ 
+    <table class="table table-condensed table-striped table-bordered">
+        <thead><tr><th>Id</th><th>Имя</th><th>возраст</th><th></th></tr></thead>
+        <tbody>
+        </tbody>
+    </table>
+   <script>getUsers()</script>
+   <script language="JavaScript">
+    getUsers();
+</script>
+</body>
+</html>
+
+
+<script>
+
+
+
+    // Получение всех пользователей
+        async function getUsers() {
+            document.write("Hello World11111111!");
+            // отправляет запрос и получаем ответ
+            const response =  fetch("http://127.0.0.1:8000/members", {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            <h1>sdasdssssa</h1>
+            document.write("Hello World11111111!");
+            // если запрос прошел нормально
+            if (response.ok === true) {
+                <h1>sdasda</h1>
+                datas = {
+                    "program_name": "1",
+                    "name": "user",
+                    "host": "none",
+                };
+                document.write("Hello World!");
+                const datas = await response.json();
+                let rows = document.querySelector("tbody"); 
+                users.forEach(datas => {
+                    // добавляем полученные элементы в таблицу
+                    rows.append(row(datas));
+                })
+            }
+        }
+
+
+
+        function row(datas) {
+  
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", datas.program_name);
+  
+            const idTd = document.createElement("td");
+            idTd.append(datas.program_name);
+            tr.append(idTd);
+  
+            const nameTd = document.createElement("td");
+            nameTd.append(datas.name);
+            tr.append(nameTd);
+  
+            const hostTd = document.createElement("td");
+            hostTd.append(datas.host);
+            tr.append(hostTd);
+              
+           /* const linksTd = document.createElement("td");
+
+  
+            const removeLink = document.createElement("a");
+            removeLink.setAttribute("data-id", user.id);
+            removeLink.setAttribute("style", "cursor:pointer;padding:15px;");
+            removeLink.append("Удалить");
+            removeLink.addEventListener("click", e => {
+  
+                e.preventDefault();
+                deleteUser(user.id);
+            });
+  
+            linksTd.append(removeLink);
+            tr.appendChild(linksTd);
+  
+            return tr;*/
+        }
+    

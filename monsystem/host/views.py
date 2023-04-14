@@ -1,4 +1,6 @@
 import difflib
+import io
+import json
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -37,7 +39,7 @@ def index(request):
         'boot_time': boot_time,
         'boot_delta': now_time - boot_time
     }
-    return render(request, 'host/index.html', {'info': info})
+    return render(request, 'index.html', {'info': info})
 
 
 
@@ -55,26 +57,29 @@ def disk(request):
             'percent': usage.percent
         }
         disks.append(disk)
-    return render(request, 'host/disk.html', {'disks': disks})
+    return render(request, 'disk.html', {'disks': disks})
 
-
-def users(requests):
+import requests
+def users(request):
     all_users = []
-    # [suser(name='Fan', terminal=None, host=None, started=1595661568.4721968, pid=None)]
-    users = psutil.users()
+    ''' [suser(name='Fan', terminal=None, host=None, started=1595661568.4721968, pid=None)]
+     users = psutil.users()
     for user in users:
         one_user = {
             'name': user.name,
             'host': user.host,
             'started': datetime.fromtimestamp(user.started)
         }
-        all_users.append(one_user)
-    return render(requests, 'host/users.html', {'users': all_users})
+        all_users.append(one_user)'''
+    res = requests.get('http://127.0.0.1:8000/member')
+    print(res.content)
+    all_users  = json.loads(res.content)
+    return render(request, 'users.html', {'users': all_users})
 
+   
 
 
 def diff(request):
- 
     print("Запроса: ", request.method)
     if request.method == 'POST':
         files = request.FILES
@@ -82,14 +87,14 @@ def diff(request):
         content2 = files.get('filename2').read()
 
         if get_md5(content1) == get_md5(content2):
-            return HttpResponse("文件内容一致")
+            return HttpResponse("оК")
         else:
             hdiff = difflib.HtmlDiff()
             content1 = content1.decode('utf-8').splitlines()
             content2 = content2.decode('utf-8').splitlines()
             result = hdiff.make_file(content1, content2)  
             return HttpResponse(result)
-    return render(request, 'host/diff.html')
+    return render(request, 'diff.html')
 
 def dicttolist(dict):
     listmain = []
@@ -164,17 +169,87 @@ def monitor(request):
        # print(cpu_usage)
    # return processes
    # processes = dicttolist(processes)
-    return render(request, 'host/monitor.html', {'processes': processes})
+    return render(request, 'monitor.html', {'processes': processes})
 
+
+def apidatas(request):
+    return render(request, 'apidatas.html')
 
 def about(request):
-    return render(request, 'host/about.html')
+    return render(request, 'about.html')
 
 def auth(request):
-    return render(request, 'host/auth.html')
+    return render(request, 'auth.html')
+
+from django.shortcuts import render
+from .models import Members
 
 
+#from .serializers import UserSerializer
+#from .models import Members
+#def get_date_from_bd(request):
+ #   mem = Members.objects.all().order_by('name')
+ #   context = {'mem': mem}
+  #  serializer_class = UserSerializer
+  #  return render(request, 'host/members.html', {'mem':mem})
+
+from rest_framework import generics
+from . import serializers
+from .models import Members
 
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from .models import Members,all_users_data
+from .serializers import MemberSerializer,all_memberSerializer
+from collections import namedtuple
 
 
+nt = namedtuple("object", ["model", "serializers"])
+pattern = {
+#"member" : nt(Members, MemberSerializer),
+"members": nt(all_users_data, all_memberSerializer)
+}
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+
+
+@api_view(["GET", "POST"])
+def ListView(request, api_name): 
+
+    object = pattern.get(api_name, None)
+    if object == None:
+        return Response(
+    data = "Invalid URL",
+    status = status.HTTP_404_NOT_FOUND,
+    )
+    if request.method == "GET":
+        object_list = object.model.objects.all()
+        serializers = object.serializers(object_list, many=True)
+        return Response(serializers.data)
+
+    if request.method == "POST":
+        #data = request.data
+        #stream = io.BytesIO(json)
+        #data = JSONParser().parse(stream)
+       # json = JSONRenderer().render(serializers.data)
+        #serializers = object.serializers(data=data)            
+        serializer =all_memberSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors) 
+
+    if not serializers.is_valid():
+     return Response(
+        data = serializers.error,
+        status = status.HTTP_404_NOT_FOUND
+    )
+    serializers.save()
+    return Response(
+        data = serializers.error,
+        status = status.HTTP_201_CREATED
+)

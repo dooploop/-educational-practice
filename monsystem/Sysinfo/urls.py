@@ -18,5 +18,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Нет специальной настройки для URL-адреса, посещаемого пользователем, ознакомьтесь с конфигурацией маршрутизации во вложенном приложении хоста.
-    path('', include('host.urls'))
+    path('', include('host.urls')),
 ]

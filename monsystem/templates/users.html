@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Войдите в систему информация о мониторинге пользователя</title>
+    {#  Импортируйте стили CSS и динамику JS, которые Bootstrap помог нам настроить #}
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <script>
+   
+        function getdata(){
+        fetch('http://127.0.0.1:8000/members').then(response => response.json()).then(data => alert(data[0]['name'])).then(users.forEach(data => {rows.append(row(data))}));
+            }
+        
+            var response = [
+            {
+      "rank":"9",
+      "content":"Alon",
+      "UID":"5"
+     },
+     {
+       "rank":"6",
+       "content":"Tala",
+       "UID":"6"
+    }];
+            $(function() {
+    $.each(response, function(i, item) {
+        var $tr = $('<tr>').append(
+            $('<td>').text(item.rank),
+            $('<td>').text(item.content),
+            $('<td>').text(item.UID)
+        ); //.appendTo('#records_table');
+        console.log($tr.wrap('<p>').html());
+    });
+});
+
+
+            
+        </script>
+        
+    
+{% include 'nav.html' %}
+{# DjangoПолезные функции в шаблоне: фильтр  users|length Получите длину списка#}
+<h1>Мониторинг информации о вошедших в систему пользователях - количество вошедших в систему пользователей: {{ users | length }}</h1>
+{#устанавливатьtableИмя класса метки - этоtableиtable-striped，На самом деле, это использовать стиль CSS, написанный Bootstrap, чтобы помочь нам установить стиль таблицы #}
+<table class="table table-striped table-hover">
+    <tr>
+        <td>Имя пользователя, вошедшего в систему</td>
+        <td>Зарегистрированный хост</td>
+        <td>Время входа в систему</td>
+    </tr>
+
+
+    {% for user in users %}
+        <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.host }}</td>
+            <td>{{ user.cpu_usage}}</td>
+        </tr>
+    {% endfor %}
+</table>
+<h1>{{mem}}</h1>
+<table class="table table-condensed table-striped table-bordered">
+    <thead><tr><th>Id</th><th>Имя</th><th>возраст</th><th></th></tr></thead>
+    <tbody>
+    </tbody>
+</table>
+<script>
+    getdata();
+    alert("hello");
+</script>
+
+
+
+--------------------------------------
+
+
+</body>
+</html>
